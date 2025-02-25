@@ -69,6 +69,24 @@ app.delete("/post/:id", async (req, res) => {
   }
 });
 
+// update post
+app.patch("/post/:id", async (req, res) => {
+  const { id } = req.params;
+const data = req.body
+
+  try {
+    const updatedPost = await prisma.post.update({
+        where: {id: id},
+        data: data,
+      });
+      
+    res.json({ message: "Post updated successfully", updatedPost });
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
